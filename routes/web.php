@@ -11,7 +11,4 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::post('/', 'RecommendationController@show');
+Route::get('/', 'CountyDisplayController@show');
