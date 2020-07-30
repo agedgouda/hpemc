@@ -78,14 +78,8 @@
  <script type="text/javascript" src="js/counties.js"></script>
 
 <script>
-var countyCluster = [];
-var countyData = <?php echo json_encode($countyData ) ?>;
-
-@foreach($countyData as $county)
-    countyName = <?php echo json_encode($county->county_name) ?>;
-    cluster = {{$county->cluster_num}}
-    countyCluster.push({"countyName":countyName,"cluster" : cluster})
-@endforeach
+    var countyCluster = [];
+    var countyData = <?php echo json_encode($countyData ) ?>;
 
     var rgbToHex = function (rgb) {
         rgb = Math.round(rgb);
@@ -106,10 +100,10 @@ var countyData = <?php echo json_encode($countyData ) ?>;
                         color = "#FFBB11";
                         break;
                     case 1:
-                        color = "#0000FF";
+                        color = "#FFFFFF";
                         break;
                     case 2:
-                        color = "#FFFFFF";
+                        color = "#0000FF";
                         break;
                     case 3:
                         color = "#00FF00";
@@ -167,7 +161,7 @@ var countyData = <?php echo json_encode($countyData ) ?>;
     }
 
     function numberWithCommas(value) {
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
 
@@ -196,21 +190,14 @@ var countyData = <?php echo json_encode($countyData ) ?>;
     info.update = function (props,thisCountyData) {
         this._div.innerHTML =  (props ?
             '<h4>' + props.name + ' County</h4><b>Cluster: ' + thisCountyData.cluster_num +'</b>' +
-            '<br/>2010 Population: '+numberWithCommas(thisCountyData.pop_2010)+
-            '<br/>2011 Population: '+numberWithCommas(thisCountyData.pop_2011)+
-            '<br/>2012 Population: '+numberWithCommas(thisCountyData.pop_2012)+
-            '<br/>2013 Population: '+numberWithCommas(thisCountyData.pop_2013)+
-            '<br/>2014 Population: '+numberWithCommas(thisCountyData.pop_2014)+
-            '<br/>2015 Population: '+numberWithCommas(thisCountyData.pop_2015)+
             '<br/>2016 Population: '+numberWithCommas(thisCountyData.pop_2016)+
-            '<br/>Number of Hospices: '+numberWithCommas(thisCountyData.numHospices)+
-            '<br/>Total Days in Hospices: '+numberWithCommas(thisCountyData.total_days)+
-            '<br/>Home Health Visit Hours per Day: '+numberWithCommas(thisCountyData.home_health_hours)+
-            '<br/>Skilled Nursing Visit Hours per Day: '+numberWithCommas(thisCountyData.skilled_nursing_hours)+
-            '<br/>Social Service Visit Hours per Day: '+numberWithCommas(thisCountyData.social_service_hours)+
-            '<br/>Home Health Visit Hours per Day During Week Prior to Death: '+numberWithCommas(thisCountyData.home_health_hours_prior)+
-            '<br/>Skilled Nursing Visit Hours per Day During Week Prior to Death: '+numberWithCommas(thisCountyData.skilled_nursing_hours_prior)+
-            '<br/>Social Service Visit Hours per Day During Week Prior to Death: '+numberWithCommas(thisCountyData.social_service_hours_prior)
+            '<br/>Average Age: '+numberWithCommas(thisCountyData.average_age)+
+            '<br/>Percent Routine Home Health Days: '+numberWithCommas(thisCountyData.percent_routine_home_health_days)+'%'+
+            '<p>Total Days in Hospices: '+numberWithCommas(thisCountyData.total_days)+
+            '<p><b>Medicare Payments</b></br> Total: $'+numberWithCommas(thisCountyData.total_medicare_payment)+'<br/>Per capita: $'+numberWithCommas(thisCountyData.medicare_payment_per_capita)+
+            '<p><b>Charge Amount</b></br> Total: $'+numberWithCommas(thisCountyData.total_charge_amount)+'<br/>Per capita: $'+numberWithCommas(thisCountyData.charge_amount_per_capita)+
+            '<p><b>Number of Hospices</b></br> Total: $'+numberWithCommas(thisCountyData.num_hospices)+'<br/>Per capita: $'+numberWithCommas(thisCountyData.num_hospices_per_capita)+
+            '<p><b>Number of Hospice Beneficiaries</b></br> Total: $'+numberWithCommas(thisCountyData.hospice_beneficiaries)+'<br/>Per capita: $'+numberWithCommas(thisCountyData.hospice_beneficiaries_per_capita)
             : 'Hover over a county');
     };
     info.addTo(mymap);
