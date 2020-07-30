@@ -194,10 +194,10 @@
             '<br/>Average Age: '+numberWithCommas(thisCountyData.average_age)+
             '<br/>Percent Routine Home Health Days: '+numberWithCommas(thisCountyData.percent_routine_home_health_days)+'%'+
             '<p>Total Days in Hospices: '+numberWithCommas(thisCountyData.total_days)+
-            '<p><b>Medicare Payments</b></br> Total: $'+numberWithCommas(thisCountyData.total_medicare_payment)+'<br/>Per capita: $'+numberWithCommas(thisCountyData.medicare_payment_per_capita)+
-            '<p><b>Charge Amount</b></br> Total: $'+numberWithCommas(thisCountyData.total_charge_amount)+'<br/>Per capita: $'+numberWithCommas(thisCountyData.charge_amount_per_capita)+
-            '<p><b>Number of Hospices</b></br> Total: $'+numberWithCommas(thisCountyData.num_hospices)+'<br/>Per capita: $'+numberWithCommas(thisCountyData.num_hospices_per_capita)+
-            '<p><b>Number of Hospice Beneficiaries</b></br> Total: $'+numberWithCommas(thisCountyData.hospice_beneficiaries)+'<br/>Per capita: $'+numberWithCommas(thisCountyData.hospice_beneficiaries_per_capita)
+            '<p><b>Medicare Payments</b></br> Total: $'+numberWithCommas(thisCountyData.total_medicare_payment)+'<br/>Per capita: $'+thisCountyData.medicare_payment_per_capita+
+            '<p><b>Charge Amount</b></br> Total: $'+numberWithCommas(thisCountyData.total_charge_amount)+'<br/>Per capita: $'+thisCountyData.charge_amount_per_capita+
+            '<p><b>Number of Hospices</b></br> Total: $'+numberWithCommas(thisCountyData.num_hospices)+'<br/>Per capita: $'+thisCountyData.num_hospices_per_capita+
+            '<p><b>Number of Hospice Beneficiaries</b></br> Total: $'+numberWithCommas(thisCountyData.hospice_beneficiaries)+'<br/>Per capita: $'+thisCountyData.hospice_beneficiaries_per_capita
             : 'Hover over a county');
     };
     info.addTo(mymap);
