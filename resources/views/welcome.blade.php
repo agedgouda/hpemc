@@ -192,20 +192,11 @@
     function showData(props,thisCountyData) {
         legend.innerHTML = '<h4> <div class="box" style="margin-top:6px;margin-right:8px;background-color:' + getColor(thisCountyData.county_name) +'"></div>' + props.name + ' County</h4>' +
             '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-8">2016 Pop:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.pop_2016,0)+'</div></div>'+
-            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Average Age:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.average_age)+'</div></div>'+
-            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-8">Home Health Days:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.percent_routine_home_care_days)+'%</div></div>'+
             '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Days in Hospices:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.total_days,0)+'</div></div>'+
-            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-7">Total Medicare Payments:</div><div class="col-sm-5 text-right">$'+numberWithCommas(thisCountyData.total_medicare_standard_payment_amount)+'</div></div>'+
-            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Per Capita Medicare Payments:</div><div class="col-sm-4 text-right">$'+numberWithCommas(thisCountyData.medicare_payment_per_2016_capita)+'</div></div>'+
-            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-6">Total Medicare Charge:</div><div class="col-sm-6 text-right">$'+numberWithCommas(thisCountyData.total_charge_amount)+'</div></div>'+
+            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-8">Per Capita Medicare Payments:</div><div class="col-sm-4 text-right">$'+numberWithCommas(thisCountyData.medicare_payment_per_2016_capita)+'</div></div>'+
             '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Per Capita Medicare Charge:</div><div class="col-sm-4 text-right">$'+numberWithCommas(thisCountyData.charge_amount_per_2016_capita)+'</div></div>'+
-            '<b></b>'+
-            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-6">Number of Hospices:</div><div class="col-sm-6 text-right">'+numberWithCommas(thisCountyData.num_hospices)+'</div></div>'+
-            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Hospices per 100k:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.numhospices_per_2016_capita*100000)+'</div></div>'+
-            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-6">Hospice Beneficiaries:</div><div class="col-sm-6 text-right">'+numberWithCommas(thisCountyData.hospice_beneficiaries)+'</div></div>'+
-            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Hospice Beneficiaries per 100k:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.hospice_beneficiaries_per_2016_capita*100000)+'</div></div>'+
-            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-8">Geriatric Specialists:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.geriatric_medicine)+'</div></div>'+
-            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Geriatric Specialists Per 100k:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.geriatric_doctors_per_2016_capita*100000)+'</div></div>';
+            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-8">Hospices per 100k:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.numhospices_per_2016_capita*100000)+'</div></div>'+
+            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-6">Hospice Beneficiaries:</div><div class="col-sm-6 text-right">'+numberWithCommas(thisCountyData.hospice_beneficiaries)+'</div></div>';
 
     }
 
@@ -255,38 +246,22 @@
         <tr>
             <th>County Name</th>
             <th>Population</th>
-            <th>Average Age</th>
-            <th>Home Health Days</th>
             <th>Days in Hospices</th>
-            <th>Total Medicare Payments</th>
             <th>Per Capita Medicare Payments</th>
-            <th>Total Medicare Charge</th>
             <th>Per Capita Medicare Charge</th>
-            <th>Number of Hospices</th>
-            <th>Hospices per 100</th>
+            <th>Hospices per 100K</th>
             <th>Hospice Beneficiaries</th>
-            <th>Hospice Beneficiaries per 100k</th>
-            <th>Geriatric Specialists</th>
-            <th>Geriatric Specialists Per 100k</th>
     </thead>
     <tbody>
     <% thisClusterData.forEach((cluster) => { %>
       <tr>
         <td><%- cluster.county_name %></td>
         <td><%- cluster.pop_2016 %></td>
-        <td><%- numberWithCommas(cluster.average_age) %></td>
-        <td><%- numberWithCommas(cluster.percent_routine_home_care_days) %>%</td>
         <td><%- numberWithCommas(cluster.total_days,0) %></td>
-        <td>$<%- numberWithCommas(cluster.total_medicare_standard_payment_amount) %></td>
         <td>$<%- numberWithCommas(cluster.medicare_payment_per_2016_capita) %></td>
-        <td>$<%- numberWithCommas(cluster.total_charge_amount) %></td>
         <td>$<%- numberWithCommas(cluster.charge_amount_per_2016_capita) %></td>
-        <td><%- numberWithCommas(cluster.num_hospices) %></td>
         <td><%- numberWithCommas(cluster.numhospices_per_2016_capita*100000) %></td>
         <td><%- numberWithCommas(cluster.hospice_beneficiaries) %></td>
-        <td><%- numberWithCommas(cluster.hospice_beneficiaries_per_2016_capita*100000) %></td>
-        <td><%- numberWithCommas(cluster.geriatric_medicine) %></td>
-        <td><%- numberWithCommas(cluster.geriatric_doctors_per_2016_capita*100000) %></td>
       </tr>
     <% }) %>
     </tbody>
