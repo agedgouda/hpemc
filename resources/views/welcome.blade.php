@@ -105,19 +105,19 @@
             if (countyData[i].county_name == nameKey.toUpperCase()) {
                 switch (countyData[i].cluster_num) {
                     case 0:
-                        color = "#FFBB11";
+                        color = "#c98efb";
                         break;
                     case 1:
                         color = "#FFFFFF";
                         break;
                     case 2:
-                        color = "#0000FF";
+                        color = "#fc8f99";
                         break;
                     case 3:
-                        color = "#00FF00";
+                        color = "#238198";
                         break;
                     case 4:
-                        color = "#FF0000";
+                        color = "#f7941d";
                         break;
                     }
                 return color;
