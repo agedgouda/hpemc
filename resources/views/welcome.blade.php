@@ -14,7 +14,7 @@
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
    crossorigin=""/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 <style>
 .dot {
   height: 25px;
@@ -39,7 +39,14 @@
     color: #777;
 }
 
-
+.box {
+  float: left;
+  height: 20px;
+  width: 20px;
+  clear: both;
+  border: 1px solid gray;
+  border-radius: 7px;
+}
 
 </style>
         <!-- JS -->
@@ -47,20 +54,10 @@
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
   crossorigin="anonymous"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.19/lodash.min.js"></script>
-        <script>
-        /*
-        $(document).ready( function () {
-            $('#la-results').DataTable({
-                "searching": false,
-                "order": [[ 0, "desc" ]]
-            });
-        });
-        */
 
-        </script>
 
 <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
@@ -70,16 +67,27 @@
     <body>
         <div class="container">
             <h1>Texas Hospice Data</h1>
-
-
-<div id="mapid"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div id="legend"></div>
+                </div>
+                <div class="col-sm-7">
+                    <div id="mapid"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="cluster"></div>
+                </div>
+            </div>
         </div>
 
- <script type="text/javascript" src="js/counties.js"></script>
+<script type="text/javascript" src="js/counties.js"></script>
 
 <script>
     var countyCluster = [];
     var countyData = <?php echo json_encode($countyData ) ?>;
+    var old_e = "";
 
     var rgbToHex = function (rgb) {
         rgb = Math.round(rgb);
@@ -136,11 +144,27 @@
     }
 
     function zoomToFeature(e) {
-        mymap.fitBounds(e.target.getBounds());
+        if (old_e != "") {
+            geojson.resetStyle(old_e.target);
+        }
+        old_e = e;
+        layer = e.target;
+        thisCountyData = _.find(countyData, {'county_name': layer.feature.properties.name.toUpperCase()})
+        highlightFeature(e)
+        thisClusterData = _.filter(countyData, {'cluster_num': thisCountyData.cluster_num})
+
+
+
+    clusterHTML = clusterTemplate({thisClusterData:thisClusterData})
+    document.querySelector('#cluster').innerHTML = clusterHTML;
+    $('#cluster-table').DataTable();
+        showData(layer.feature.properties,thisCountyData)
     }
     function resetHighlight(e) {
+        if (old_e == "" || old_e.target.feature.properties.name != e.target.feature.properties.name) {
         geojson.resetStyle(e.target);
         info.update();
+        }
     }
     function highlightFeature(e) {
         var layer = e.target;
@@ -160,13 +184,33 @@
         info.update(layer.feature.properties,thisCountyData);
     }
 
-    function numberWithCommas(value) {
-        return value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    function numberWithCommas(value,decimals) {
+        var numDecimals = decimals ?? 2;
+        return value.toFixed(numDecimals).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function showData(props,thisCountyData) {
+        legend.innerHTML = '<h4> <div class="box" style="margin-top:6px;margin-right:8px;background-color:' + getColor(thisCountyData.county_name) +'"></div>' + props.name + ' County</h4>' +
+            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-8">2016 Pop:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.pop_2016,0)+'</div></div>'+
+            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Average Age:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.average_age)+'</div></div>'+
+            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-8">Home Health Days:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.percent_routine_home_care_days)+'%</div></div>'+
+            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Days in Hospices:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.total_days,0)+'</div></div>'+
+            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-7">Total Medicare Payments:</div><div class="col-sm-5 text-right">$'+numberWithCommas(thisCountyData.total_medicare_standard_payment_amount)+'</div></div>'+
+            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Per Capita Medicare Payments:</div><div class="col-sm-4 text-right">$'+numberWithCommas(thisCountyData.medicare_payment_per_2016_capita)+'</div></div>'+
+            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-6">Total Medicare Charge:</div><div class="col-sm-6 text-right">$'+numberWithCommas(thisCountyData.total_charge_amount)+'</div></div>'+
+            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Per Capita Medicare Charge:</div><div class="col-sm-4 text-right">$'+numberWithCommas(thisCountyData.charge_amount_per_2016_capita)+'</div></div>'+
+            '<b></b>'+
+            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-6">Number of Hospices:</div><div class="col-sm-6 text-right">'+numberWithCommas(thisCountyData.num_hospices)+'</div></div>'+
+            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Hospices per 100k:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.numhospices_per_2016_capita*100000)+'</div></div>'+
+            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-6">Hospice Beneficiaries:</div><div class="col-sm-6 text-right">'+numberWithCommas(thisCountyData.hospice_beneficiaries)+'</div></div>'+
+            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Hospice Beneficiaries per 100k:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.hospice_beneficiaries_per_2016_capita*100000)+'</div></div>'+
+            '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-8">Geriatric Specialists:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.geriatric_medicine)+'</div></div>'+
+            '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Geriatric Specialists Per 100k:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.geriatric_doctors_per_2016_capita*100000)+'</div></div>';
+
     }
 
 
-
-	var mymap = L.map('mapid').setView([30.5,-99.9018], 6);
+	var mymap = L.map('mapid').setView([31.25,-99.9018], 6);
 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
@@ -180,6 +224,8 @@
 
     var info = L.control();
 
+    var legend = document.getElementById('legend');
+
     info.onAdd = function (mymap) {
         this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
         this.update();
@@ -188,28 +234,68 @@
 
     // method that we will use to update the control based on feature properties passed
     info.update = function (props,thisCountyData) {
-        this._div.innerHTML =  (props ?
-            '<h4>' + props.name + ' County</h4><b>Cluster: ' + thisCountyData.cluster_num +'</b>' +
-            '<br/>2016 Population: '+numberWithCommas(thisCountyData.pop_2016)+
-            '<br/>Average Age: '+numberWithCommas(thisCountyData.average_age)+
-            '<br/>Percent Routine Home Health Days: '+numberWithCommas(thisCountyData.percent_routine_home_health_days)+'%'+
-            '<p>Total Days in Hospices: '+numberWithCommas(thisCountyData.total_days)+
-            '<p><b>Medicare Payments</b></br> Total: $'+numberWithCommas(thisCountyData.total_medicare_payment)+'<br/>Per capita: $'+thisCountyData.medicare_payment_per_capita+
-            '<p><b>Charge Amount</b></br> Total: $'+numberWithCommas(thisCountyData.total_charge_amount)+'<br/>Per capita: $'+thisCountyData.charge_amount_per_capita+
-            '<p><b>Number of Hospices</b></br> Total: '+numberWithCommas(thisCountyData.num_hospices)+'<br/>Per capita: '+thisCountyData.num_hospices_per_capita+
-            '<p><b>Number of Hospice Beneficiaries</b></br> Total: '+numberWithCommas(thisCountyData.hospice_beneficiaries)+'<br/>Per capita: '+thisCountyData.hospice_beneficiaries_per_capita
+        this._div.innerHTML = (props ?
+            '<h4> <div class="box" style="margin-top:5px;margin-right:8px;background-color:' + getColor(thisCountyData.county_name) +'"></div>' + props.name + ' County</h4><b>Population: ' + numberWithCommas(thisCountyData.pop_2016,0) +'</b>'+
+            '<br/>Click for more information'
             : 'Hover over a county');
     };
     info.addTo(mymap);
+
+/*
+    mymap.on('click', function(ev) {
+    alert(ev.latlng); // ev is an event object (MouseEvent in this case)
+});
+*/
+
 </script>
 
-
-
-
+<script type="text/template" id="grid-template">
+  <table id="cluster-table">
+    <thead>
+        <tr>
+            <th>County Name</th>
+            <th>Population</th>
+            <th>Average Age</th>
+            <th>Home Health Days</th>
+            <th>Days in Hospices</th>
+            <th>Total Medicare Payments</th>
+            <th>Per Capita Medicare Payments</th>
+            <th>Total Medicare Charge</th>
+            <th>Per Capita Medicare Charge</th>
+            <th>Number of Hospices</th>
+            <th>Hospices per 100</th>
+            <th>Hospice Beneficiaries</th>
+            <th>Hospice Beneficiaries per 100k</th>
+            <th>Geriatric Specialists</th>
+            <th>Geriatric Specialists Per 100k</th>
+    </thead>
+    <tbody>
+    <% thisClusterData.forEach((cluster) => { %>
+      <tr>
+        <td><%- cluster.county_name %></td>
+        <td><%- cluster.pop_2016 %></td>
+        <td><%- numberWithCommas(cluster.average_age) %></td>
+        <td><%- numberWithCommas(cluster.percent_routine_home_care_days) %>%</td>
+        <td><%- numberWithCommas(cluster.total_days,0) %></td>
+        <td>$<%- numberWithCommas(cluster.total_medicare_standard_payment_amount) %></td>
+        <td>$<%- numberWithCommas(cluster.medicare_payment_per_2016_capita) %></td>
+        <td>$<%- numberWithCommas(cluster.total_charge_amount) %></td>
+        <td>$<%- numberWithCommas(cluster.charge_amount_per_2016_capita) %></td>
+        <td><%- numberWithCommas(cluster.num_hospices) %></td>
+        <td><%- numberWithCommas(cluster.numhospices_per_2016_capita*100000) %></td>
+        <td><%- numberWithCommas(cluster.hospice_beneficiaries) %></td>
+        <td><%- numberWithCommas(cluster.hospice_beneficiaries_per_2016_capita*100000) %></td>
+        <td><%- numberWithCommas(cluster.geriatric_medicine) %></td>
+        <td><%- numberWithCommas(cluster.geriatric_doctors_per_2016_capita*100000) %></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+</script>
+<script>
+    var str = document.querySelector('#grid-template').textContent;
+    var clusterTemplate = _.template(str);
+</script>
 
     </body>
 </html>
-
-
-
-
