@@ -55,6 +55,7 @@
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
   crossorigin="anonymous"></script>
         <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.19/lodash.min.js"></script>
 
@@ -71,11 +72,11 @@
                 <div class="col-sm-4">
                     <div id="legend"></div>
                 </div>
-                <div class="col-sm-7">
+                <div class="col-sm-7 offset-sm-1" style="padding-top: 15px;">
                     <div id="mapid"></div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="padding-top: 15px;">
                 <div class="col-sm-12">
                     <div id="cluster"></div>
                 </div>
@@ -148,24 +149,57 @@
             geojson.resetStyle(old_e.target);
         }
         old_e = e;
+
         layer = e.target;
         thisCountyData = _.find(countyData, {'county_name': layer.feature.properties.name.toUpperCase()})
         highlightFeature(e)
         thisClusterData = _.filter(countyData, {'cluster_num': thisCountyData.cluster_num})
 
+        clusterHTML = clusterTemplate({thisClusterData:thisClusterData});
+        document.querySelector('#cluster').innerHTML = clusterHTML;
 
+        var table = $('#cluster-table').DataTable( {
+            "bLengthChange": false,
+            searching: false,
+            paging: false,
+            select: {
+                style: 'single'
+            }
+        } );
 
-    clusterHTML = clusterTemplate({thisClusterData:thisClusterData})
-    document.querySelector('#cluster').innerHTML = clusterHTML;
-    $('#cluster-table').DataTable();
-        showData(layer.feature.properties,thisCountyData)
+        $('#cluster-table tbody').on( 'click', 'tr', function () {
+
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        } );
+
+        $('#button').click( function () {
+            table.row('.selected').remove().draw( false );
+        } );
+
+        legendHTML = legendTemplate({county:thisCountyData});
+        document.querySelector('#legend').innerHTML = legendHTML;
+        var table = $('#legend-table').DataTable( {
+            searching: false,
+            paging: false,
+            ordering: false,
+            info: false
+        } );
+        //showData(thisCountyData)
     }
+
     function resetHighlight(e) {
         if (old_e == "" || old_e.target.feature.properties.name != e.target.feature.properties.name) {
         geojson.resetStyle(e.target);
         info.update();
         }
     }
+
     function highlightFeature(e) {
         var layer = e.target;
 
@@ -189,17 +223,15 @@
         return value.toFixed(numDecimals).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
-    function showData(props,thisCountyData) {
-        legend.innerHTML = '<h4> <div class="box" style="margin-top:6px;margin-right:8px;background-color:' + getColor(thisCountyData.county_name) +'"></div>' + props.name + ' County</h4>' +
+    function showData(thisCountyData) {
+        legend.innerHTML = '<h4> <div class="box" style="margin-top:6px;margin-right:8px;background-color:' + getColor(thisCountyData.county_name) +'"></div>' + thisCountyData.county_name + ' County</h4>' +
             '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-8">2016 Pop:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.pop_2016,0)+'</div></div>'+
             '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Days in Hospices:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.total_days,0)+'</div></div>'+
             '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-8">Per Capita Medicare Payments:</div><div class="col-sm-4 text-right">$'+numberWithCommas(thisCountyData.medicare_payment_per_2016_capita)+'</div></div>'+
             '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-8">Per Capita Medicare Charge:</div><div class="col-sm-4 text-right">$'+numberWithCommas(thisCountyData.charge_amount_per_2016_capita)+'</div></div>'+
             '<div class="row bg-secondary text-light" style="font-size: smaller;"><div class="col-sm-8">Hospices per 100k:</div><div class="col-sm-4 text-right">'+numberWithCommas(thisCountyData.numhospices_per_2016_capita*100000)+'</div></div>'+
             '<div class="row bg-light text-dark" style="font-size: smaller;"><div class="col-sm-6">Hospice Beneficiaries:</div><div class="col-sm-6 text-right">'+numberWithCommas(thisCountyData.hospice_beneficiaries)+'</div></div>';
-
     }
-
 
 	var mymap = L.map('mapid').setView([31.25,-99.9018], 6);
 
@@ -231,37 +263,65 @@
             : 'Hover over a county');
     };
     info.addTo(mymap);
+</script>
 
-/*
-    mymap.on('click', function(ev) {
-    alert(ev.latlng); // ev is an event object (MouseEvent in this case)
-});
-*/
+<script type="text/template" id="legend-template">
+
+  <table id="legend-table" class="stripe">
+    <thead>
+        <tr>
+            <th><div class="box" style="margin-top:3px;margin-right:8px;background-color:<%- getColor(county.county_name) %>"></div><%- _.startCase(_.toLower(county.county_name)) %> County</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Population</td><td class="text-right"><%- numberWithCommas(county.pop_2016,0) %></td>
+      </tr>
+      <tr>
+        <td>Days in Hospices</td><td class="text-right"><%- numberWithCommas(county.total_days,0) %></td>
+      </tr>
+      <tr>
+        <td>Per Capita Medicare Payments</td><td class="text-right">$<%- numberWithCommas(county.medicare_payment_per_2016_capita) %></td>
+      </tr>
+      <tr>
+        <td>Per Capita Medicare Charge</td><td class="text-right">$<%- numberWithCommas(county.charge_amount_per_2016_capita) %></td>
+      </tr>
+      <tr>
+        <td>Hospices per 100K</td><td class="text-right"><%- numberWithCommas(county.numhospices_per_2016_capita*100000) %></td>
+      </tr>
+      <tr>
+        <td>Hospice Beneficiaries</td><td class="text-right"><%- numberWithCommas(county.hospice_beneficiaries) %></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row"><div class="text-center col-sm-12"><button class="btn btn-outline-secondary mt-3" type="submit">MORE</button></div></div>
 
 </script>
 
 <script type="text/template" id="grid-template">
-  <table id="cluster-table">
+  <h2>Other <span class="box" style="display: inline-block;float: none;background-color:<%- getColor(thisClusterData[0].county_name) %>"></span> Counties</h2>
+  <table id="cluster-table" class="display" style="cursor:pointer" >
     <thead>
-        <tr>
-            <th>County Name</th>
+        <tr style="font-size: 14px;">
+            <th>County</th>
             <th>Population</th>
             <th>Days in Hospices</th>
-            <th>Per Capita Medicare Payments</th>
-            <th>Per Capita Medicare Charge</th>
-            <th>Hospices per 100K</th>
+            <th class="text-center">Medicare Payments<br />Per Capita</th>
+            <th class="text-center">Medicare Charge<br />Per Capita</th>
+            <th>Hospices Per 100K</th>
             <th>Hospice Beneficiaries</th>
     </thead>
     <tbody>
     <% thisClusterData.forEach((cluster) => { %>
-      <tr>
-        <td><%- cluster.county_name %></td>
-        <td><%- cluster.pop_2016 %></td>
-        <td><%- numberWithCommas(cluster.total_days,0) %></td>
-        <td>$<%- numberWithCommas(cluster.medicare_payment_per_2016_capita) %></td>
-        <td>$<%- numberWithCommas(cluster.charge_amount_per_2016_capita) %></td>
-        <td><%- numberWithCommas(cluster.numhospices_per_2016_capita*100000) %></td>
-        <td><%- numberWithCommas(cluster.hospice_beneficiaries) %></td>
+      <tr style="font-size: 14px;">
+        <td><%- _.startCase(_.toLower(cluster.county_name)) %></td>
+        <td class="text-right"><%- numberWithCommas(cluster.pop_2016,0) %></td>
+        <td class="text-right"><%- numberWithCommas(cluster.total_days,0) %></td>
+        <td class="text-right">$<%- numberWithCommas(cluster.medicare_payment_per_2016_capita) %></td>
+        <td class="text-right">$<%- numberWithCommas(cluster.charge_amount_per_2016_capita) %></td>
+        <td class="text-right"><%- numberWithCommas(cluster.numhospices_per_2016_capita*100000) %></td>
+        <td class="text-right"><%- numberWithCommas(cluster.hospice_beneficiaries) %></td>
       </tr>
     <% }) %>
     </tbody>
@@ -270,6 +330,8 @@
 <script>
     var str = document.querySelector('#grid-template').textContent;
     var clusterTemplate = _.template(str);
+    str = document.querySelector('#legend-template').textContent;
+    var legendTemplate = _.template(str);
 </script>
 
     </body>
