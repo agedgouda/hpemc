@@ -293,7 +293,7 @@
         <td>Hospices per 100K</td><td class="text-right"><%- numberWithCommas(county.numhospices_per_2016_capita*100000) %></td>
       </tr>
       <tr>
-        <td>Hospice Beneficiaries</td><td class="text-right"><%- numberWithCommas(county.hospice_beneficiaries) %></td>
+        <td>Hospice Beneficiaries</td><td class="text-right"><%- numberWithCommas(county.hospice_beneficiaries,0) %></td>
       </tr>
     </tbody>
   </table>
@@ -323,7 +323,7 @@
         <td class="text-right">$<%- numberWithCommas(cluster.medicare_payment_per_2016_capita) %></td>
         <td class="text-right">$<%- numberWithCommas(cluster.charge_amount_per_2016_capita) %></td>
         <td class="text-right"><%- numberWithCommas(cluster.numhospices_per_2016_capita*100000) %></td>
-        <td class="text-right"><%- numberWithCommas(cluster.hospice_beneficiaries) %></td>
+        <td class="text-right"><%- numberWithCommas(cluster.hospice_beneficiaries,0) %></td>
       </tr>
     <% }) %>
     </tbody>
