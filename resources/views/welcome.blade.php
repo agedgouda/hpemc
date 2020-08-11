@@ -6,6 +6,8 @@
 
         <title>HPEMG</title>
 
+        <link rel="shortcut icon" href="https://hpemg.com/wp-content/uploads/2018/08/favicon-32x32.png" />
+
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
@@ -15,39 +17,39 @@
    crossorigin=""/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-<style>
-.dot {
-  height: 25px;
-  width: 25px;
-  border-radius: 50%;
-  display: inline-block;
-}
 
-#mapid { height: 580px; }
+    <style>
+    .dot {
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        display: inline-block;
+    }
 
+    #mapid { height: 580px; }
 
-.info {
-    padding: 6px 8px;
-    font: 14px/16px Arial, Helvetica, sans-serif;
-    background: white;
-    background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;
-}
-.info h4 {
-    margin: 0 0 5px;
-    color: #777;
-}
+    .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+    }
 
-.box {
-  float: left;
-  height: 20px;
-  width: 20px;
-  clear: both;
-  border: 1px solid gray;
-  border-radius: 7px;
-}
+    .info h4 {
+        margin: 0 0 5px;
+        color: #777;
+    }
 
+    .box {
+        float: left;
+        height: 20px;
+        width: 20px;
+        clear: both;
+        border: 1px solid gray;
+        border-radius: 7px;
+    }
 </style>
         <!-- JS -->
         <script
