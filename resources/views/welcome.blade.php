@@ -27,6 +27,7 @@
     }
 
     #mapid { height: 580px; }
+    #modal-county-map { height: 368px; }
 
     .info {
             padding: 6px 8px;
@@ -51,11 +52,10 @@
         border-radius: 7px;
     }
 </style>
-        <!-- JS -->
-        <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
+        <!-- JS, Popper.js, and jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
@@ -153,6 +153,7 @@
         old_e = e;
 
         layer = e.target;
+
         thisCountyData = _.find(countyData, {'county_name': layer.feature.properties.name.toUpperCase()})
         highlightFeature(e)
         thisClusterData = _.filter(countyData, {'cluster_num': thisCountyData.cluster_num})
@@ -297,7 +298,11 @@
       </tr>
     </tbody>
   </table>
-  <div class="row"><div class="text-center col-sm-12"><button class="btn btn-outline-secondary mt-3" type="submit">MORE</button></div></div>
+  <div class="row">
+    <div class="text-center col-sm-12">
+        <button class="btn btn-outline-secondary mt-3" data-toggle="modal" data-target="#countyDetailModal" data-county="<%- JSON. stringify(county) %>" >MORE</button>
+    </div>
+</div>
 
 </script>
 
@@ -334,7 +339,516 @@
     var clusterTemplate = _.template(str);
     str = document.querySelector('#legend-template').textContent;
     var legendTemplate = _.template(str);
+    var county_map = "";
 </script>
 
+<!-- Modal -->
+<div class="modal fade" id="countyDetailModal" tabindex="-1" role="dialog" aria-labelledby="countyDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+  <script>
+    $(document).ready(function() {
+        $('#modal-pop-table').DataTable( {
+            searching: false,
+            paging: false,
+            ordering: false,
+            info: false
+        });
+        $('#modal-doc-table').DataTable( {
+            "pageLength": 25,
+            paging: false,
+            ordering: false,
+        } );
+        $('#modal-data-table').DataTable( {
+            searching: false,
+            paging: false,
+            ordering: false,
+            info: false
+        } );
+    } );
+
+    </script>
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="countyDetailModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+            <div class="col-sm-6">
+                <table id="modal-pop-table" class="stripe">
+                    <thead>
+                        <tr>
+                            <th>Population</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>2016</td><td class="text-right"><div id="modal-pop_2016"></div></td>
+                    </tr>
+                    <tr>
+                        <td>2015</td><td class="text-right"><div id="modal-pop_2015"></div></td>
+                    </tr>
+                    <tr>
+                        <td>2014</td><td class="text-right"><div id="modal-pop_2014"></div></td>
+                    </tr>
+                    <tr>
+                        <td>2013</td><td class="text-right"><div id="modal-pop_2013"></div></td>
+                    </tr>
+                    <tr>
+                        <td>2012</td><td class="text-right"><div id="modal-pop_2012"></div></td>
+                    </tr>
+                    <tr>
+                        <td>2011</td><td class="text-right"><div id="modal-pop_2011"></div></td>
+                    </tr>
+                    <tr>
+                        <td>2010</td><td class="text-right"><div id="modal-pop_2010"></div></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-6">
+                <div id="modal-county-map"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="modal-data-table" class="stripe">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>hospice_beneficiaries</td><td class="text-right"><div id="modal-hospice_beneficiaries"></div></td>
+                        </tr>
+                        <tr>
+                            <td>total_days</td><td class="text-right"><div id="modal-total_days"></div></td>
+                        </tr>
+                        <tr>
+                            <td>total_medicare_standard_payment_amount</td><td class="text-right"><div id="modal-total_medicare_standard_payment_amount"></div></td>
+                        </tr>
+                        <tr>
+                            <td>total_charge_amount</td><td class="text-right"><div id="modal-total_charge_amount"></div></td>
+                        </tr>
+                        <tr>
+                            <td>home_health_visit_hours_per_day</td><td class="text-right"><div id="modal-home_health_visit_hours_per_day"></div></td>
+                        </tr>
+                        <tr>
+                            <td>skilled_nursing_visit_hours_per_day</td><td class="text-right"><div id="modal-skilled_nursing_visit_hours_per_day"></div></td>
+                        </tr>
+                        <tr>
+                            <td>social_service_visit_hours_per_day</td><td class="text-right"><div id="modal-social_service_visit_hours_per_day"></div></td>
+                        </tr>
+                        <tr>
+                            <td>home_health_visit_hours_per_day_during_week_prior_to_death</td><td class="text-right"><div id="modal-home_health_visit_hours_per_day_during_week_prior_to_death"></div></td>
+                        </tr>
+                        <tr>
+                            <td>skilled_nursing_visit_hours_per_day_during_week_prior_to_death</td><td class="text-right"><div id="modal-skilled_nursing_visit_hours_per_day_during_week_prior_to_death"></div></td>
+                        </tr>
+                        <tr>
+                            <td>social_service_visit_hours_per_day_during_week_prior_to_death</td><td class="text-right"><div id="modal-social_service_visit_hours_per_day_during_week_prior_to_death"></div></td>
+                        </tr>
+                        <tr>
+                            <td>num_hospices</td><td class="text-right"><div id="modal-num_hospices"></div></td>
+                        </tr>
+                        <tr>
+                            <td>percent_routine_home_care_days</td><td class="text-right"><div id="modal-percent_routine_home_care_days"></div></td>
+                        </tr>
+                        <tr>
+                            <td>medicare_payment_per_2016_capita</td><td class="text-right"><div id="modal-medicare_payment_per_2016_capita"></div></td>
+                        </tr>
+                        <tr>
+                            <td>charge_amount_per_2016_capita</td><td class="text-right"><div id="modal-charge_amount_per_2016_capita"></div></td>
+                        </tr>
+                        <tr>
+                            <td>numhospices_per_2016_capita</td><td class="text-right"><div id="modal-numhospices_per_2016_capita"></div></td>
+                        </tr>
+                        <tr>
+                            <td>hospice_beneficiaries_per_2016_capita</td><td class="text-right"><div id="modal-hospice_beneficiaries_per_2016_capita"></div></td>
+                        </tr>
+                        <tr>
+                            <td>geriatric_doctors_per_2016_capita</td><td class="text-right"><div id="modal-geriatric_doctors_per_2016_capita"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-sm-12">
+                <table id="modal-doc-table" class="stripe">
+                    <thead>
+                        <tr>
+                            <th>Medical Specialty</th>
+                            <th>Number of Specialists</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Total</td><td class="text-right"><div id="modal-total_doctors"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Addiction Medicine</td><td class="text-right"><div id="modal-addiction_medicine"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Allergy Immunology</td><td class="text-right"><div id="modal-allergy_immunology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Anesthesiology</td><td class="text-right"><div id="modal-anesthesiology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Anesthesiology Assistant</td><td class="text-right"><div id="modal-anesthesiology_assistant"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Audiologist</td><td class="text-right"><div id="modal-audiologist"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Cardiac Electrophysiology</td><td class="text-right"><div id="modal-cardiac_electrophysiology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Cardiac Surgery</td><td class="text-right"><div id="modal-cardiac_surgery"></div></td>
+                    </tr>
+                    <tr>
+                        <td>cardiovascular_disease_cardiology</td><td class="text-right"><div id="modal-cardiovascular_disease_cardiology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>certified_nurse_midwife</td><td class="text-right"><div id="modal-certified_nurse_midwife"></div></td>
+                    </tr>
+                    <tr>
+                        <td>certified_registered_nurse_anesthetist</td><td class="text-right"><div id="modal-certified_registered_nurse_anesthetist"></div></td>
+                    </tr>
+                    <tr>
+                        <td>chiropractic</td><td class="text-right"><div id="modal-chiropractic"></div></td>
+                    </tr>
+                    <tr>
+                        <td>clinical_nurse_specialist</td><td class="text-right"><div id="modal-clinical_nurse_specialist"></div></td>
+                    </tr>
+                    <tr>
+                        <td>clinical_social_worker</td><td class="text-right"><div id="modal-clinical_social_worker"></div></td>
+                    </tr>
+                    <tr>
+                        <td>colorectal_surgery_proctology</td><td class="text-right"><div id="modal-colorectal_surgery_proctology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>critical_care_intensivists</td><td class="text-right"><div id="modal-critical_care_intensivists"></div></td>
+                    </tr>
+                    <tr>
+                        <td>dermatology</td><td class="text-right"><div id="modal-dermatology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>diagnostic_radiology</td><td class="text-right"><div id="modal-diagnostic_radiology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>emergency_medicine</td><td class="text-right"><div id="modal-emergency_medicine"></div></td>
+                    </tr>
+                    <tr>
+                        <td>endocrinology</td><td class="text-right"><div id="modal-endocrinology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>family_practice</td><td class="text-right"><div id="modal-family_practice"></div></td>
+                    </tr>
+                    <tr>
+                        <td>gastroenterology</td><td class="text-right"><div id="modal-gastroenterology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>general_practice</td><td class="text-right"><div id="modal-general_practice"></div></td>
+                    </tr>
+                    <tr>
+                        <td>general_surgery</td><td class="text-right"><div id="modal-general_surgery"></div></td>
+                    </tr>
+                    <tr>
+                        <td>geriatric_medicine</td><td class="text-right"><div id="modal-geriatric_medicine"></div></td>
+                    </tr>
+                    <tr>
+                        <td>geriatric_psychiatry</td><td class="text-right"><div id="modal-geriatric_psychiatry"></div></td>
+                    </tr>
+                    <tr>
+                        <td>gynecological_oncology</td><td class="text-right"><div id="modal-gynecological_oncology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>hand_surgery</td><td class="text-right"><div id="modal-hand_surgery"></div></td>
+                    </tr>
+                    <tr>
+                        <td>hematology</td><td class="text-right"><div id="modal-hematology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>hematology_oncology</td><td class="text-right"><div id="modal-hematology_oncology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>hospice_palliative_care</td><td class="text-right"><div id="modal-hospice_palliative_care"></div></td>
+                    </tr>
+                    <tr>
+                        <td>infectious_disease</td><td class="text-right"><div id="modal-infectious_disease"></div></td>
+                    </tr>
+                    <tr>
+                        <td>internal_medicine</td><td class="text-right"><div id="modal-internal_medicine"></div></td>
+                    </tr>
+                    <tr>
+                        <td>interventional_cardiology</td><td class="text-right"><div id="modal-interventional_cardiology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>interventional_pain_management</td><td class="text-right"><div id="modal-interventional_pain_management"></div></td>
+                    </tr>
+                    <tr>
+                        <td>interventional_radiology</td><td class="text-right"><div id="modal-interventional_radiology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>maxillofacial_surgery</td><td class="text-right"><div id="modal-maxillofacial_surgery"></div></td>
+                    </tr>
+                    <tr>
+                        <td>medical_oncology</td><td class="text-right"><div id="modal-medical_oncology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>nephrology</td><td class="text-right"><div id="modal-nephrology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>neurology</td><td class="text-right"><div id="modal-neurology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>neuropsychiatry</td><td class="text-right"><div id="modal-neuropsychiatry"></div></td>
+                    </tr>
+                    <tr>
+                        <td>neurosurgery</td><td class="text-right"><div id="modal-neurosurgery"></div></td>
+                    </tr>
+                    <tr>
+                        <td>nuclear_medicine</td><td class="text-right"><div id="modal-nuclear_medicine"></div></td>
+                    </tr>
+                    <tr>
+                        <td>nurse_practitioner</td><td class="text-right"><div id="modal-nurse_practitioner"></div></td>
+                    </tr>
+                    <tr>
+                        <td>obstetrics_gynecology</td><td class="text-right"><div id="modal-obstetrics_gynecology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>occupational_therapy</td><td class="text-right"><div id="modal-occupational_therapy"></div></td>
+                    </tr>
+                    <tr>
+                        <td>ophthalmology</td><td class="text-right"><div id="modal-ophthalmology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>optometry</td><td class="text-right"><div id="modal-optometry"></div></td>
+                    </tr>
+                    <tr>
+                        <td>oral_surgery_dentist_only</td><td class="text-right"><div id="modal-oral_surgery_dentist_only"></div></td>
+                    </tr>
+                    <tr>
+                        <td>orthopedic_surgery</td><td class="text-right"><div id="modal-orthopedic_surgery"></div></td>
+                    </tr>
+                    <tr>
+                        <td>osteopathic_manipulative_medicine</td><td class="text-right"><div id="modal-osteopathic_manipulative_medicine"></div></td>
+                    </tr>
+                    <tr>
+                        <td>otolaryngology</td><td class="text-right"><div id="modal-otolaryngology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>pain_management</td><td class="text-right"><div id="modal-pain_management"></div></td>
+                    </tr>
+                    <tr>
+                        <td>pathology</td><td class="text-right"><div id="modal-pathology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>pediatric_medicine</td><td class="text-right"><div id="modal-pediatric_medicine"></div></td>
+                    </tr>
+                    <tr>
+                        <td>peripheral_vascular_disease</td><td class="text-right"><div id="modal-peripheral_vascular_disease"></div></td>
+                    </tr>
+                    <tr>
+                        <td>physical_medicine_and_rehabilitation</td><td class="text-right"><div id="modal-physical_medicine_and_rehabilitation"></div></td>
+                    </tr>
+                    <tr>
+                        <td>physical_therapy</td><td class="text-right"><div id="modal-physical_therapy"></div></td>
+                    </tr>
+                    <tr>
+                        <td>physician_assistant</td><td class="text-right"><div id="modal-physician_assistant"></div></td>
+                    </tr>
+                    <tr>
+                        <td>plastic_and_reconstructive_surgery</td><td class="text-right"><div id="modal-plastic_and_reconstructive_surgery"></div></td>
+                    </tr>
+                    <tr>
+                        <td>podiatry</td><td class="text-right"><div id="modal-podiatry"></div></td>
+                    </tr>
+                    <tr>
+                        <td>preventative_medicine</td><td class="text-right"><div id="modal-preventative_medicine"></div></td>
+                    </tr>
+                    <tr>
+                        <td>psychiatry</td><td class="text-right"><div id="modal-psychiatry"></div></td>
+                    </tr>
+                    <tr>
+                        <td>pulmonary_disease</td><td class="text-right"><div id="modal-pulmonary_disease"></div></td>
+                    </tr>
+                    <tr>
+                        <td>radiation_oncology</td><td class="text-right"><div id="modal-radiation_oncology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>registered_dietitian_or_nutrition_professional</td><td class="text-right"><div id="modal-registered_dietitian_or_nutrition_professional"></div></td>
+                    </tr>
+                    <tr>
+                        <td>rheumatology</td><td class="text-right"><div id="modal-rheumatology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>sleep_laboratory_medicine</td><td class="text-right"><div id="modal-sleep_laboratory_medicine"></div></td>
+                    </tr>
+                    <tr>
+                        <td>speech_language_pathologist</td><td class="text-right"><div id="modal-speech_language_pathologist"></div></td>
+                    </tr>
+                    <tr>
+                        <td>sports_medicine</td><td class="text-right"><div id="modal-sports_medicine"></div></td>
+                    </tr>
+                    <tr>
+                        <td>surgical_oncology</td><td class="text-right"><div id="modal-surgical_oncology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>thoracic_surgery</td><td class="text-right"><div id="modal-thoracic_surgery"></div></td>
+                    </tr>
+                    <tr>
+                        <td>undefined_physician_type</td><td class="text-right"><div id="modal-undefined_physician_type"></div></td>
+                    </tr>
+                    <tr>
+                        <td>urology</td><td class="text-right"><div id="modal-urology"></div></td>
+                    </tr>
+                    <tr>
+                        <td>vascular_surgery</td><td class="text-right"><div id="modal-vascular_surgery"></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    $('#countyDetailModal').on('show.bs.modal', function(e) {
+        var county = $(e.relatedTarget).data('county');
+        var modal = $(this)
+        modal.find('.modal-title').text(_.startCase(_.toLower(county.county_name)));
+        modal.find('#modal-population').text(numberWithCommas(county.pop_2016,0));
+        modal.find('#modal-pop_2010').text(numberWithCommas(county.pop_2010,0));
+        modal.find('#modal-pop_2011').text(numberWithCommas(county.pop_2011,0));
+        modal.find('#modal-pop_2012').text(numberWithCommas(county.pop_2012,0));
+        modal.find('#modal-pop_2013').text(numberWithCommas(county.pop_2013,0));
+        modal.find('#modal-pop_2014').text(numberWithCommas(county.pop_2014,0));
+        modal.find('#modal-pop_2015').text(numberWithCommas(county.pop_2015,0));
+        modal.find('#modal-pop_2016').text(numberWithCommas(county.pop_2016,0));
+        modal.find('#modal-addiction_medicine').text(numberWithCommas(county.addiction_medicine,0));
+        modal.find('#modal-allergy_immunology').text(numberWithCommas(county.allergy_immunology,0));
+        modal.find('#modal-anesthesiology').text(numberWithCommas(county.anesthesiology,0));
+        modal.find('#modal-anesthesiology_assistant').text(numberWithCommas(county.anesthesiology_assistant,0));
+        modal.find('#modal-audiologist').text(numberWithCommas(county.audiologist,0));
+        modal.find('#modal-cardiac_electrophysiology').text(numberWithCommas(county.cardiac_electrophysiology,0));
+        modal.find('#modal-cardiac_surgery').text(numberWithCommas(county.cardiac_surgery,0));
+        modal.find('#modal-cardiovascular_disease_cardiology').text(numberWithCommas(county.cardiovascular_disease_cardiology,0));
+        modal.find('#modal-certified_nurse_midwife').text(numberWithCommas(county.certified_nurse_midwife,0));
+        modal.find('#modal-certified_registered_nurse_anesthetist').text(numberWithCommas(county.certified_registered_nurse_anesthetist,0));
+        modal.find('#modal-chiropractic').text(numberWithCommas(county.chiropractic,0));
+        modal.find('#modal-clinical_nurse_specialist').text(numberWithCommas(county.clinical_nurse_specialist,0));
+        modal.find('#modal-clinical_social_worker').text(numberWithCommas(county.clinical_social_worker,0));
+        modal.find('#modal-colorectal_surgery_proctology').text(numberWithCommas(county.colorectal_surgery_proctology,0));
+        modal.find('#modal-critical_care_intensivists').text(numberWithCommas(county.critical_care_intensivists,0));
+        modal.find('#modal-dermatology').text(numberWithCommas(county.dermatology,0));
+        modal.find('#modal-diagnostic_radiology').text(numberWithCommas(county.diagnostic_radiology,0));
+        modal.find('#modal-emergency_medicine').text(numberWithCommas(county.emergency_medicine,0));
+        modal.find('#modal-endocrinology').text(numberWithCommas(county.endocrinology,0));
+        modal.find('#modal-family_practice').text(numberWithCommas(county.family_practice,0));
+        modal.find('#modal-gastroenterology').text(numberWithCommas(county.gastroenterology,0));
+        modal.find('#modal-general_practice').text(numberWithCommas(county.general_practice,0));
+        modal.find('#modal-general_surgery').text(numberWithCommas(county.general_surgery,0));
+        modal.find('#modal-geriatric_medicine').text(numberWithCommas(county.geriatric_medicine,0));
+        modal.find('#modal-geriatric_psychiatry').text(numberWithCommas(county.geriatric_psychiatry,0));
+        modal.find('#modal-gynecological_oncology').text(numberWithCommas(county.gynecological_oncology,0));
+        modal.find('#modal-hand_surgery').text(numberWithCommas(county.hand_surgery,0));
+        modal.find('#modal-hematology').text(numberWithCommas(county.hematology,0));
+        modal.find('#modal-hematology_oncology').text(numberWithCommas(county.hematology_oncology,0));
+        modal.find('#modal-hospice_palliative_care').text(numberWithCommas(county.hospice_palliative_care,0));
+        modal.find('#modal-infectious_disease').text(numberWithCommas(county.infectious_disease,0));
+        modal.find('#modal-internal_medicine').text(numberWithCommas(county.internal_medicine,0));
+        modal.find('#modal-interventional_cardiology').text(numberWithCommas(county.interventional_cardiology,0));
+        modal.find('#modal-interventional_pain_management').text(numberWithCommas(county.interventional_pain_management,0));
+        modal.find('#modal-interventional_radiology').text(numberWithCommas(county.interventional_radiology,0));
+        modal.find('#modal-maxillofacial_surgery').text(numberWithCommas(county.maxillofacial_surgery,0));
+        modal.find('#modal-medical_oncology').text(numberWithCommas(county.medical_oncology,0));
+        modal.find('#modal-nephrology').text(numberWithCommas(county.nephrology,0));
+        modal.find('#modal-neurology').text(numberWithCommas(county.neurology,0));
+        modal.find('#modal-neuropsychiatry').text(numberWithCommas(county.neuropsychiatry,0));
+        modal.find('#modal-neurosurgery').text(numberWithCommas(county.neurosurgery,0));
+        modal.find('#modal-nuclear_medicine').text(numberWithCommas(county.nuclear_medicine,0));
+        modal.find('#modal-nurse_practitioner').text(numberWithCommas(county.nurse_practitioner,0));
+        modal.find('#modal-obstetrics_gynecology').text(numberWithCommas(county.obstetrics_gynecology,0));
+        modal.find('#modal-occupational_therapy').text(numberWithCommas(county.occupational_therapy,0));
+        modal.find('#modal-ophthalmology').text(numberWithCommas(county.ophthalmology,0));
+        modal.find('#modal-optometry').text(numberWithCommas(county.optometry,0));
+        modal.find('#modal-oral_surgery_dentist_only').text(numberWithCommas(county.oral_surgery_dentist_only,0));
+        modal.find('#modal-orthopedic_surgery').text(numberWithCommas(county.orthopedic_surgery,0));
+        modal.find('#modal-osteopathic_manipulative_medicine').text(numberWithCommas(county.osteopathic_manipulative_medicine,0));
+        modal.find('#modal-otolaryngology').text(numberWithCommas(county.otolaryngology,0));
+        modal.find('#modal-pain_management').text(numberWithCommas(county.pain_management,0));
+        modal.find('#modal-pathology').text(numberWithCommas(county.pathology,0));
+        modal.find('#modal-pediatric_medicine').text(numberWithCommas(county.pediatric_medicine,0));
+        modal.find('#modal-peripheral_vascular_disease').text(numberWithCommas(county.peripheral_vascular_disease,0));
+        modal.find('#modal-physical_medicine_and_rehabilitation').text(numberWithCommas(county.physical_medicine_and_rehabilitation,0));
+        modal.find('#modal-physical_therapy').text(numberWithCommas(county.physical_therapy,0));
+        modal.find('#modal-physician_assistant').text(numberWithCommas(county.physician_assistant,0));
+        modal.find('#modal-plastic_and_reconstructive_surgery').text(numberWithCommas(county.plastic_and_reconstructive_surgery,0));
+        modal.find('#modal-podiatry').text(numberWithCommas(county.podiatry,0));
+        modal.find('#modal-preventative_medicine').text(numberWithCommas(county.preventative_medicine,0));
+        modal.find('#modal-psychiatry').text(numberWithCommas(county.psychiatry,0));
+        modal.find('#modal-pulmonary_disease').text(numberWithCommas(county.pulmonary_disease,0));
+        modal.find('#modal-radiation_oncology').text(numberWithCommas(county.radiation_oncology,0));
+        modal.find('#modal-registered_dietitian_or_nutrition_professional').text(numberWithCommas(county.registered_dietitian_or_nutrition_professional,0));
+        modal.find('#modal-rheumatology').text(numberWithCommas(county.rheumatology,0));
+        modal.find('#modal-sleep_laboratory_medicine').text(numberWithCommas(county.sleep_laboratory_medicine,0));
+        modal.find('#modal-speech_language_pathologist').text(numberWithCommas(county.speech_language_pathologist,0));
+        modal.find('#modal-sports_medicine').text(numberWithCommas(county.sports_medicine,0));
+        modal.find('#modal-surgical_oncology').text(numberWithCommas(county.surgical_oncology,0));
+        modal.find('#modal-thoracic_surgery').text(numberWithCommas(county.thoracic_surgery,0));
+        modal.find('#modal-undefined_physician_type').text(numberWithCommas(county.undefined_physician_type,0));
+        modal.find('#modal-urology').text(numberWithCommas(county.urology,0));
+        modal.find('#modal-vascular_surgery').text(numberWithCommas(county.vascular_surgery,0));
+        modal.find('#modal-total_doctors').text(numberWithCommas(county.total_doctors,0));
+        modal.find('#modal-hospice_beneficiaries').text(numberWithCommas(county.hospice_beneficiaries,0));
+        modal.find('#modal-total_days').text(numberWithCommas(county.total_days,0));
+        modal.find('#modal-total_medicare_standard_payment_amount').text(numberWithCommas(county.total_medicare_standard_payment_amount,0));
+        modal.find('#modal-total_charge_amount').text(numberWithCommas(county.total_charge_amount,0));
+        modal.find('#modal-home_health_visit_hours_per_day').text(numberWithCommas(county.home_health_visit_hours_per_day,0));
+        modal.find('#modal-skilled_nursing_visit_hours_per_day').text(numberWithCommas(county.skilled_nursing_visit_hours_per_day,0));
+        modal.find('#modal-social_service_visit_hours_per_day').text(numberWithCommas(county.social_service_visit_hours_per_day,0));
+        modal.find('#modal-home_health_visit_hours_per_day_during_week_prior_to_death').text(numberWithCommas(county.home_health_visit_hours_per_day_during_week_prior_to_death,0));
+        modal.find('#modal-skilled_nursing_visit_hours_per_day_during_week_prior_to_death').text(numberWithCommas(county.skilled_nursing_visit_hours_per_day_during_week_prior_to_death,0));
+        modal.find('#modal-social_service_visit_hours_per_day_during_week_prior_to_death').text(numberWithCommas(county.social_service_visit_hours_per_day_during_week_prior_to_death,0));
+        modal.find('#modal-num_hospices').text(numberWithCommas(county.num_hospices,0));
+        modal.find('#modal-percent_routine_home_care_days').text(numberWithCommas(county.percent_routine_home_care_days,0));
+        modal.find('#modal-medicare_payment_per_2016_capita').text(numberWithCommas(county.medicare_payment_per_2016_capita,0));
+        modal.find('#modal-charge_amount_per_2016_capita').text(numberWithCommas(county.charge_amount_per_2016_capita,0));
+        modal.find('#modal-numhospices_per_2016_capita').text(numberWithCommas(county.numhospices_per_2016_capita,0));
+        modal.find('#modal-hospice_beneficiaries_per_2016_capita').text(numberWithCommas(county.hospice_beneficiaries_per_2016_capita,0));
+        modal.find('#modal-geriatric_doctors_per_2016_capita').text(numberWithCommas(county.geriatric_doctors_per_2016_capita,0));
+
+        if (county_map !== "") {
+            county_map.remove();
+        }
+
+        setTimeout(function() {
+            county_map.invalidateSize();
+        }, 200);
+        county_map = L.map('modal-county-map').setView([31.25,-99.9018], 10);
+    	    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		    maxZoom: 18,
+		    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			    '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		    id: 'mapbox.streets'
+	    }).addTo(county_map);
+
+    });
+
+</script>
     </body>
 </html>
