@@ -111,16 +111,16 @@
                         color = "#c98efb";
                         break;
                     case 1:
-                        color = "#FFFFFF";
+                        color = "#fc8f99";
                         break;
                     case 2:
-                        color = "#fc8f99";
+                        color = "#f7941d";
                         break;
                     case 3:
                         color = "#238198";
                         break;
                     case 4:
-                        color = "#f7941d";
+                        color = "#FFFFFF";
                         break;
                     }
                 return color;
@@ -833,11 +833,10 @@
         if (county_map !== "") {
             county_map.remove();
         }
-
         setTimeout(function() {
             county_map.invalidateSize();
         }, 200);
-        county_map = L.map('modal-county-map').setView([31.25,-99.9018], 10);
+        county_map = L.map('modal-county-map').setView(JSON.parse(county.location), 10);
     	    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		    maxZoom: 18,
 		    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
