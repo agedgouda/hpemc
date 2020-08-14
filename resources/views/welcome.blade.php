@@ -424,57 +424,56 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="text-transform: capitalize;">
                         <tr>
-                            <td>hospice_beneficiaries</td><td class="text-right"><div id="modal-hospice_beneficiaries"></div></td>
+                            <td>Number of Hospices</td><td class="text-right"><div id="modal-num_hospices"></div></td>
                         </tr>
                         <tr>
-                            <td>total_days</td><td class="text-right"><div id="modal-total_days"></div></td>
+                            <td>hospice beneficiaries</td><td class="text-right"><div id="modal-hospice_beneficiaries"></div></td>
                         </tr>
                         <tr>
-                            <td>total_medicare_standard_payment_amount</td><td class="text-right"><div id="modal-total_medicare_standard_payment_amount"></div></td>
+                            <td>total days</td><td class="text-right"><div id="modal-total_days"></div></td>
                         </tr>
                         <tr>
-                            <td>total_charge_amount</td><td class="text-right"><div id="modal-total_charge_amount"></div></td>
+                            <td>total medicare payment amount</td><td class="text-right"><div id="modal-total_medicare_standard_payment_amount"></div></td>
                         </tr>
                         <tr>
-                            <td>home_health_visit_hours_per_day</td><td class="text-right"><div id="modal-home_health_visit_hours_per_day"></div></td>
+                            <td>per capita medicare payment</td><td class="text-right"><div id="modal-medicare_payment_per_2016_capita"></div></td>
                         </tr>
                         <tr>
-                            <td>skilled_nursing_visit_hours_per_day</td><td class="text-right"><div id="modal-skilled_nursing_visit_hours_per_day"></div></td>
+                            <td>total medicare charge amount</td><td class="text-right"><div id="modal-total_charge_amount"></div></td>
+                        </tr>
+                        </tr>
+                            <td>per capita medicare charge amount</td><td class="text-right"><div id="modal-charge_amount_per_2016_capita"></div></td>
                         </tr>
                         <tr>
-                            <td>social_service_visit_hours_per_day</td><td class="text-right"><div id="modal-social_service_visit_hours_per_day"></div></td>
+                            <td>home health visit hours per day</td><td class="text-right"><div id="modal-home_health_visit_hours_per_day"></div></td>
                         </tr>
                         <tr>
-                            <td>home_health_visit_hours_per_day_during_week_prior_to_death</td><td class="text-right"><div id="modal-home_health_visit_hours_per_day_during_week_prior_to_death"></div></td>
+                            <td>skilled nursing visit hours per day</td><td class="text-right"><div id="modal-skilled_nursing_visit_hours_per_day"></div></td>
                         </tr>
                         <tr>
-                            <td>skilled_nursing_visit_hours_per_day_during_week_prior_to_death</td><td class="text-right"><div id="modal-skilled_nursing_visit_hours_per_day_during_week_prior_to_death"></div></td>
+                            <td>social service visit hours per day</td><td class="text-right"><div id="modal-social_service_visit_hours_per_day"></div></td>
                         </tr>
                         <tr>
-                            <td>social_service_visit_hours_per_day_during_week_prior_to_death</td><td class="text-right"><div id="modal-social_service_visit_hours_per_day_during_week_prior_to_death"></div></td>
+                            <td>home health visit hours per day during week prior to death</td><td class="text-right"><div id="modal-home_health_visit_hours_per_day_during_week_prior_to_death"></div></td>
                         </tr>
                         <tr>
-                            <td>num_hospices</td><td class="text-right"><div id="modal-num_hospices"></div></td>
+                            <td>skilled nursing visit hours per day during week prior to death</td><td class="text-right"><div id="modal-skilled_nursing_visit_hours_per_day_during_week_prior_to_death"></div></td>
                         </tr>
                         <tr>
-                            <td>percent_routine_home_care_days</td><td class="text-right"><div id="modal-percent_routine_home_care_days"></div></td>
+                            <td>social service visit hours per day during week prior to death</td><td class="text-right"><div id="modal-social_service_visit_hours_per_day_during_week_prior_to_death"></div></td>
                         </tr>
                         <tr>
-                            <td>medicare_payment_per_2016_capita</td><td class="text-right"><div id="modal-medicare_payment_per_2016_capita"></div></td>
+                            <td>percent routine home care days</td><td class="text-right"><div id="modal-percent_routine_home_care_days"></div></td>
+                        <tr>
+                            <td>numhospices per 2016 capita</td><td class="text-right"><div id="modal-numhospices_per_2016_capita"></div></td>
                         </tr>
                         <tr>
-                            <td>charge_amount_per_2016_capita</td><td class="text-right"><div id="modal-charge_amount_per_2016_capita"></div></td>
+                            <td>hospice beneficiaries per 2016 capita</td><td class="text-right"><div id="modal-hospice_beneficiaries_per_2016_capita"></div></td>
                         </tr>
                         <tr>
-                            <td>numhospices_per_2016_capita</td><td class="text-right"><div id="modal-numhospices_per_2016_capita"></div></td>
-                        </tr>
-                        <tr>
-                            <td>hospice_beneficiaries_per_2016_capita</td><td class="text-right"><div id="modal-hospice_beneficiaries_per_2016_capita"></div></td>
-                        </tr>
-                        <tr>
-                            <td>geriatric_doctors_per_2016_capita</td><td class="text-right"><div id="modal-geriatric_doctors_per_2016_capita"></div></td>
+                            <td>geriatric doctors per 2016 capita</td><td class="text-right"><div id="modal-geriatric_doctors_per_2016_capita"></div></td>
                         </tr>
                     </tbody>
                 </table>
@@ -489,7 +488,7 @@
                             <th>Number of Specialists</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="text-transform: capitalize;">
                     <tr>
                         <td>Total</td><td class="text-right"><div id="modal-total_doctors"></div></td>
                     </tr>
@@ -515,94 +514,94 @@
                         <td>Cardiac Surgery</td><td class="text-right"><div id="modal-cardiac_surgery"></div></td>
                     </tr>
                     <tr>
-                        <td>cardiovascular_disease_cardiology</td><td class="text-right"><div id="modal-cardiovascular_disease_cardiology"></div></td>
+                        <td>cardiovascular disease cardiology</td><td class="text-right"><div id="modal-cardiovascular_disease_cardiology"></div></td>
                     </tr>
                     <tr>
-                        <td>certified_nurse_midwife</td><td class="text-right"><div id="modal-certified_nurse_midwife"></div></td>
+                        <td>certified nurse midwife</td><td class="text-right"><div id="modal-certified_nurse_midwife"></div></td>
                     </tr>
                     <tr>
-                        <td>certified_registered_nurse_anesthetist</td><td class="text-right"><div id="modal-certified_registered_nurse_anesthetist"></div></td>
+                        <td>certified registered nurse anesthetist</td><td class="text-right"><div id="modal-certified_registered_nurse_anesthetist"></div></td>
                     </tr>
                     <tr>
                         <td>chiropractic</td><td class="text-right"><div id="modal-chiropractic"></div></td>
                     </tr>
                     <tr>
-                        <td>clinical_nurse_specialist</td><td class="text-right"><div id="modal-clinical_nurse_specialist"></div></td>
+                        <td>clinical nurse specialist</td><td class="text-right"><div id="modal-clinical_nurse_specialist"></div></td>
                     </tr>
                     <tr>
-                        <td>clinical_social_worker</td><td class="text-right"><div id="modal-clinical_social_worker"></div></td>
+                        <td>clinical social worker</td><td class="text-right"><div id="modal-clinical_social_worker"></div></td>
                     </tr>
                     <tr>
-                        <td>colorectal_surgery_proctology</td><td class="text-right"><div id="modal-colorectal_surgery_proctology"></div></td>
+                        <td>colorectal surgery proctology</td><td class="text-right"><div id="modal-colorectal_surgery_proctology"></div></td>
                     </tr>
                     <tr>
-                        <td>critical_care_intensivists</td><td class="text-right"><div id="modal-critical_care_intensivists"></div></td>
+                        <td>critical care intensivists</td><td class="text-right"><div id="modal-critical_care_intensivists"></div></td>
                     </tr>
                     <tr>
                         <td>dermatology</td><td class="text-right"><div id="modal-dermatology"></div></td>
                     </tr>
                     <tr>
-                        <td>diagnostic_radiology</td><td class="text-right"><div id="modal-diagnostic_radiology"></div></td>
+                        <td>diagnostic radiology</td><td class="text-right"><div id="modal-diagnostic_radiology"></div></td>
                     </tr>
                     <tr>
-                        <td>emergency_medicine</td><td class="text-right"><div id="modal-emergency_medicine"></div></td>
+                        <td>emergency medicine</td><td class="text-right"><div id="modal-emergency_medicine"></div></td>
                     </tr>
                     <tr>
                         <td>endocrinology</td><td class="text-right"><div id="modal-endocrinology"></div></td>
                     </tr>
                     <tr>
-                        <td>family_practice</td><td class="text-right"><div id="modal-family_practice"></div></td>
+                        <td>family practice</td><td class="text-right"><div id="modal-family_practice"></div></td>
                     </tr>
                     <tr>
                         <td>gastroenterology</td><td class="text-right"><div id="modal-gastroenterology"></div></td>
                     </tr>
                     <tr>
-                        <td>general_practice</td><td class="text-right"><div id="modal-general_practice"></div></td>
+                        <td>general practice</td><td class="text-right"><div id="modal-general_practice"></div></td>
                     </tr>
                     <tr>
-                        <td>general_surgery</td><td class="text-right"><div id="modal-general_surgery"></div></td>
+                        <td>general surgery</td><td class="text-right"><div id="modal-general_surgery"></div></td>
                     </tr>
                     <tr>
-                        <td>geriatric_medicine</td><td class="text-right"><div id="modal-geriatric_medicine"></div></td>
+                        <td>geriatric medicine</td><td class="text-right"><div id="modal-geriatric_medicine"></div></td>
                     </tr>
                     <tr>
-                        <td>geriatric_psychiatry</td><td class="text-right"><div id="modal-geriatric_psychiatry"></div></td>
+                        <td>geriatric psychiatry</td><td class="text-right"><div id="modal-geriatric_psychiatry"></div></td>
                     </tr>
                     <tr>
-                        <td>gynecological_oncology</td><td class="text-right"><div id="modal-gynecological_oncology"></div></td>
+                        <td>gynecological oncology</td><td class="text-right"><div id="modal-gynecological_oncology"></div></td>
                     </tr>
                     <tr>
-                        <td>hand_surgery</td><td class="text-right"><div id="modal-hand_surgery"></div></td>
+                        <td>hand surgery</td><td class="text-right"><div id="modal-hand_surgery"></div></td>
                     </tr>
                     <tr>
                         <td>hematology</td><td class="text-right"><div id="modal-hematology"></div></td>
                     </tr>
                     <tr>
-                        <td>hematology_oncology</td><td class="text-right"><div id="modal-hematology_oncology"></div></td>
+                        <td>hematology oncology</td><td class="text-right"><div id="modal-hematology_oncology"></div></td>
                     </tr>
                     <tr>
-                        <td>hospice_palliative_care</td><td class="text-right"><div id="modal-hospice_palliative_care"></div></td>
+                        <td>hospice palliative care</td><td class="text-right"><div id="modal-hospice_palliative_care"></div></td>
                     </tr>
                     <tr>
-                        <td>infectious_disease</td><td class="text-right"><div id="modal-infectious_disease"></div></td>
+                        <td>infectious disease</td><td class="text-right"><div id="modal-infectious_disease"></div></td>
                     </tr>
                     <tr>
-                        <td>internal_medicine</td><td class="text-right"><div id="modal-internal_medicine"></div></td>
+                        <td>internal medicine</td><td class="text-right"><div id="modal-internal_medicine"></div></td>
                     </tr>
                     <tr>
-                        <td>interventional_cardiology</td><td class="text-right"><div id="modal-interventional_cardiology"></div></td>
+                        <td>interventional cardiology</td><td class="text-right"><div id="modal-interventional_cardiology"></div></td>
                     </tr>
                     <tr>
-                        <td>interventional_pain_management</td><td class="text-right"><div id="modal-interventional_pain_management"></div></td>
+                        <td>interventional pain management</td><td class="text-right"><div id="modal-interventional_pain_management"></div></td>
                     </tr>
                     <tr>
-                        <td>interventional_radiology</td><td class="text-right"><div id="modal-interventional_radiology"></div></td>
+                        <td>interventional radiology</td><td class="text-right"><div id="modal-interventional_radiology"></div></td>
                     </tr>
                     <tr>
-                        <td>maxillofacial_surgery</td><td class="text-right"><div id="modal-maxillofacial_surgery"></div></td>
+                        <td>maxillofacial surgery</td><td class="text-right"><div id="modal-maxillofacial_surgery"></div></td>
                     </tr>
                     <tr>
-                        <td>medical_oncology</td><td class="text-right"><div id="modal-medical_oncology"></div></td>
+                        <td>medical oncology</td><td class="text-right"><div id="modal-medical_oncology"></div></td>
                     </tr>
                     <tr>
                         <td>nephrology</td><td class="text-right"><div id="modal-nephrology"></div></td>
@@ -617,16 +616,16 @@
                         <td>neurosurgery</td><td class="text-right"><div id="modal-neurosurgery"></div></td>
                     </tr>
                     <tr>
-                        <td>nuclear_medicine</td><td class="text-right"><div id="modal-nuclear_medicine"></div></td>
+                        <td>nuclear medicine</td><td class="text-right"><div id="modal-nuclear_medicine"></div></td>
                     </tr>
                     <tr>
-                        <td>nurse_practitioner</td><td class="text-right"><div id="modal-nurse_practitioner"></div></td>
+                        <td>nurse practitioner</td><td class="text-right"><div id="modal-nurse_practitioner"></div></td>
                     </tr>
                     <tr>
-                        <td>obstetrics_gynecology</td><td class="text-right"><div id="modal-obstetrics_gynecology"></div></td>
+                        <td>obstetrics gynecology</td><td class="text-right"><div id="modal-obstetrics_gynecology"></div></td>
                     </tr>
                     <tr>
-                        <td>occupational_therapy</td><td class="text-right"><div id="modal-occupational_therapy"></div></td>
+                        <td>occupational therapy</td><td class="text-right"><div id="modal-occupational_therapy"></div></td>
                     </tr>
                     <tr>
                         <td>ophthalmology</td><td class="text-right"><div id="modal-ophthalmology"></div></td>
@@ -635,85 +634,85 @@
                         <td>optometry</td><td class="text-right"><div id="modal-optometry"></div></td>
                     </tr>
                     <tr>
-                        <td>oral_surgery_dentist_only</td><td class="text-right"><div id="modal-oral_surgery_dentist_only"></div></td>
+                        <td>oral surgery dentist only</td><td class="text-right"><div id="modal-oral_surgery_dentist_only"></div></td>
                     </tr>
                     <tr>
-                        <td>orthopedic_surgery</td><td class="text-right"><div id="modal-orthopedic_surgery"></div></td>
+                        <td>orthopedic surgery</td><td class="text-right"><div id="modal-orthopedic_surgery"></div></td>
                     </tr>
                     <tr>
-                        <td>osteopathic_manipulative_medicine</td><td class="text-right"><div id="modal-osteopathic_manipulative_medicine"></div></td>
+                        <td>osteopathic manipulative medicine</td><td class="text-right"><div id="modal-osteopathic_manipulative_medicine"></div></td>
                     </tr>
                     <tr>
                         <td>otolaryngology</td><td class="text-right"><div id="modal-otolaryngology"></div></td>
                     </tr>
                     <tr>
-                        <td>pain_management</td><td class="text-right"><div id="modal-pain_management"></div></td>
+                        <td>pain management</td><td class="text-right"><div id="modal-pain_management"></div></td>
                     </tr>
                     <tr>
                         <td>pathology</td><td class="text-right"><div id="modal-pathology"></div></td>
                     </tr>
                     <tr>
-                        <td>pediatric_medicine</td><td class="text-right"><div id="modal-pediatric_medicine"></div></td>
+                        <td>pediatric medicine</td><td class="text-right"><div id="modal-pediatric_medicine"></div></td>
                     </tr>
                     <tr>
-                        <td>peripheral_vascular_disease</td><td class="text-right"><div id="modal-peripheral_vascular_disease"></div></td>
+                        <td>peripheral vascular disease</td><td class="text-right"><div id="modal-peripheral_vascular_disease"></div></td>
                     </tr>
                     <tr>
-                        <td>physical_medicine_and_rehabilitation</td><td class="text-right"><div id="modal-physical_medicine_and_rehabilitation"></div></td>
+                        <td>physical medicine and rehabilitation</td><td class="text-right"><div id="modal-physical_medicine_and_rehabilitation"></div></td>
                     </tr>
                     <tr>
-                        <td>physical_therapy</td><td class="text-right"><div id="modal-physical_therapy"></div></td>
+                        <td>physical therapy</td><td class="text-right"><div id="modal-physical_therapy"></div></td>
                     </tr>
                     <tr>
-                        <td>physician_assistant</td><td class="text-right"><div id="modal-physician_assistant"></div></td>
+                        <td>physician assistant</td><td class="text-right"><div id="modal-physician_assistant"></div></td>
                     </tr>
                     <tr>
-                        <td>plastic_and_reconstructive_surgery</td><td class="text-right"><div id="modal-plastic_and_reconstructive_surgery"></div></td>
+                        <td>plastic and reconstructive surgery</td><td class="text-right"><div id="modal-plastic_and_reconstructive_surgery"></div></td>
                     </tr>
                     <tr>
                         <td>podiatry</td><td class="text-right"><div id="modal-podiatry"></div></td>
                     </tr>
                     <tr>
-                        <td>preventative_medicine</td><td class="text-right"><div id="modal-preventative_medicine"></div></td>
+                        <td>preventative medicine</td><td class="text-right"><div id="modal-preventative_medicine"></div></td>
                     </tr>
                     <tr>
                         <td>psychiatry</td><td class="text-right"><div id="modal-psychiatry"></div></td>
                     </tr>
                     <tr>
-                        <td>pulmonary_disease</td><td class="text-right"><div id="modal-pulmonary_disease"></div></td>
+                        <td>pulmonary disease</td><td class="text-right"><div id="modal-pulmonary_disease"></div></td>
                     </tr>
                     <tr>
-                        <td>radiation_oncology</td><td class="text-right"><div id="modal-radiation_oncology"></div></td>
+                        <td>radiation oncology</td><td class="text-right"><div id="modal-radiation_oncology"></div></td>
                     </tr>
                     <tr>
-                        <td>registered_dietitian_or_nutrition_professional</td><td class="text-right"><div id="modal-registered_dietitian_or_nutrition_professional"></div></td>
+                        <td>registered dietitian or nutrition professional</td><td class="text-right"><div id="modal-registered_dietitian_or_nutrition_professional"></div></td>
                     </tr>
                     <tr>
                         <td>rheumatology</td><td class="text-right"><div id="modal-rheumatology"></div></td>
                     </tr>
                     <tr>
-                        <td>sleep_laboratory_medicine</td><td class="text-right"><div id="modal-sleep_laboratory_medicine"></div></td>
+                        <td>sleep laboratory medicine</td><td class="text-right"><div id="modal-sleep_laboratory_medicine"></div></td>
                     </tr>
                     <tr>
-                        <td>speech_language_pathologist</td><td class="text-right"><div id="modal-speech_language_pathologist"></div></td>
+                        <td>speech language pathologist</td><td class="text-right"><div id="modal-speech_language_pathologist"></div></td>
                     </tr>
                     <tr>
-                        <td>sports_medicine</td><td class="text-right"><div id="modal-sports_medicine"></div></td>
+                        <td>sports medicine</td><td class="text-right"><div id="modal-sports_medicine"></div></td>
                     </tr>
                     <tr>
-                        <td>surgical_oncology</td><td class="text-right"><div id="modal-surgical_oncology"></div></td>
+                        <td>surgical oncology</td><td class="text-right"><div id="modal-surgical_oncology"></div></td>
                     </tr>
                     <tr>
-                        <td>thoracic_surgery</td><td class="text-right"><div id="modal-thoracic_surgery"></div></td>
+                        <td>thoracic surgery</td><td class="text-right"><div id="modal-thoracic_surgery"></div></td>
                     </tr>
                     <tr>
-                        <td>undefined_physician_type</td><td class="text-right"><div id="modal-undefined_physician_type"></div></td>
+                        <td>undefined physician type</td><td class="text-right"><div id="modal-undefined_physician_type"></div></td>
                     </tr>
                     <tr>
                         <td>urology</td><td class="text-right"><div id="modal-urology"></div></td>
                     </tr>
                     <tr>
-                        <td>vascular_surgery</td><td class="text-right"><div id="modal-vascular_surgery"></div></td>
+                        <td>vascular surgery</td><td class="text-right"><div id="modal-vascular_surgery"></div></td>
                     </tr>
                 </tbody>
             </table>
