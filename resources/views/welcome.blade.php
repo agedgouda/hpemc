@@ -209,9 +209,10 @@
     };
 
     function getColor(score){
-        blue =  rgbToHex(255*score);
-        red = rgbToHex(255*(1-score));
-        color = "#"+red+"00"+blue;
+        color_score = (1/(score*5))
+        console.log(color_score)
+        red = rgbToHex(255*(1-color_score));
+        color = "#FF"+red+"00";
         return color;
     }
 
@@ -244,9 +245,7 @@
         for (var i=0; i < countyData.length; i++) {
             color = "#FFFFFF";
             if (countyData[i].county_name == nameKey.toUpperCase()) {
-                blue =  rgbToHex(255*(countyData[i].score));
-                red = rgbToHex(255*(1-countyData[i].score));
-                color = "#"+red+"00"+blue;
+                color = getColor(countyData[i].score);
                 return color;
             }
         }
