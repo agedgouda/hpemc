@@ -17,8 +17,6 @@
    crossorigin=""/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css">
 
     <style>
     .dot {
@@ -66,8 +64,6 @@
         <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.19/lodash.min.js"></script>
 
 
@@ -76,6 +72,12 @@
         crossorigin=""></script>
     </head>
     <body>
+    @include('partials.county-modal')
+
+
+
+
+
         <div class="container">
             <h1>Texas Hospice Data</h1>
             <div class="row">
@@ -93,7 +95,7 @@
             </div>
         </div>
 
-<script type="text/javascript" src="js/counties.js"></script>
+    <script type="text/javascript" src="js/counties.js"></script>
 
 
 
@@ -142,6 +144,8 @@
 
     var str = document.querySelector('#info-template').textContent;
     var infoTemplate = _.template(str);
+    str = document.querySelector('#county-detail-template').textContent;
+    var countyDetailTemplate = _.template(str);
 
 
     var countyCluster = [];
@@ -149,13 +153,31 @@
     var old_e = "";
 
 
-    var showCountyModal = function (r) {
-        var myHeading = infoTemplate(); //"<p>I Am Added Dynamically </p>";
-        console.log(infoTemplate())
-        $("#modal-body").html(myHeading);
-        $('#modal').modal('show');
-    };
+    var showCountyModal = function (county) {
+        county = JSON.parse(county)
+        var countyContent = countyDetailTemplate({county:county}); //"<p>I Am Added Dynamically </p>";
 
+        $("#modal-body").html(countyContent);
+        $('#modal').modal('show');
+
+        $('#modal-pop-table').DataTable( {
+            searching: false,
+            paging: false,
+            ordering: false,
+            info: false
+        });
+        $('#modal-doc-table').DataTable( {
+            "pageLength": 25,
+            paging: false,
+            ordering: false,
+        } );
+        $('#modal-data-table').DataTable( {
+            searching: false,
+            paging: false,
+            ordering: false,
+            info: false
+        } );
+    };
 
     var rgbToHex = function (rgb) {
         rgb = Math.round(rgb);
@@ -283,26 +305,12 @@
             paging: false,
             select: {
                 style: 'single'
-            },
-            responsive: {
-                details: {
-                    display: $.fn.dataTable.Responsive.display.modal( {
-                        header: function ( row ) {
-                            var thisClusterData = row.data();
-                            return clusterTemplate({thisClusterData:thisClusterData})
-                            //return 'Details for '+data[0]+' '+data[1];
-                        }
-                    } ),
-                    renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
-                        tableClass: 'table'
-                    } )
-                }
             }
         } );
 
         $('#cluster-table tbody').on( 'click', 'tr', function () {
-
-//$("#countyDetailModal").modal("show");
+            thisCountyData = _.find(countyData, {'county_name': JSON.parse($(this).data().county) });
+            showCountyModal(JSON.stringify(thisCountyData))
             if ( $(this).hasClass('selected') ) {
                 $(this).removeClass('selected');
             }
@@ -433,8 +441,7 @@
   </table>
   <div class="row">
     <div class="text-center col-sm-12">
-        <button class="btn btn-outline-secondary mt-3 open-county-details" data-toggle="modal" data-target="#countyDetailModal" data-county="<%- JSON. stringify(county) %>" >Old MORE</button>
-        <button class="btn btn-outline-secondary mt-3 open-county-details" onClick="showCountyModal('Hey,now')">MORE</button>
+        <button class="btn btn-outline-secondary mt-3 open-county-details" onClick="showCountyModal('<%- JSON. stringify(county) %>') ">MORE</button>
     </div>
 </div>
 
@@ -479,11 +486,11 @@
 <!-- Modal -->
 
 <div id="modal" class="modal fade" role='dialog'>
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Tutorialsplane Modal Demo</h4>
+                <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body" id= "modal-body">
                 <p>Here the description starts here........</p>
@@ -496,6 +503,16 @@
       </div>
   </div>
 
+
+
+
+
+
+
+
+
+    </body>
+</html>
 
 
 
