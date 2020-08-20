@@ -84,6 +84,7 @@
 
     </head>
     <body>
+    <div class="se-pre-con"></div>
     @include('partials.county-modal')
         <div class="container">
             <h1>Texas Hospice Data</h1>
@@ -94,7 +95,7 @@
                             <thead>
                                 <tr>
                                     <th>County</th>
-                                    <th class="text-right">Population</th>
+                                    <th class="text-right">Per Capita<br>Medicare Payments</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -104,7 +105,7 @@
                                         {{ ucwords(strtolower($countyData[$i]->county_name)) }}
                                         </td>
                                         <td class="text-right">
-                                        {{ number_format($countyData[$i]->pop_2016) }}
+                                        ${{ number_format($countyData[$i]->medicare_payment_per_2016_capita,2) }}
                                         </td>
                                     </tr>
                                 @endfor
