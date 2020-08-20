@@ -54,22 +54,22 @@
                             <td>Number of Hospices</td><td class="text-right"><%- numberWithCommas(county.num_hospices,0) %></td>
                         </tr>
                         <tr>
-                            <td>hospice beneficiaries</td><td class="text-right"><%- numberWithCommas(county.hospice_beneficiaries,0) %></td>
+                            <td>Hospice Beneficiaries</td><td class="text-right"><%- numberWithCommas(county.hospice_beneficiaries,0) %></td>
                         </tr>
                         <tr>
                             <td>total days</td><td class="text-right"><%- numberWithCommas(county.total_days,0) %></td>
                         </tr>
                         <tr>
-                            <td>total medicare payment amount</td><td class="text-right"><%- numberWithCommas(county.total_medicare_standard_payment_amount) %></td>
+                            <td>total medicare payment amount</td><td class="text-right">$<%- numberWithCommas(county.total_medicare_standard_payment_amount,0) %></td>
                         </tr>
                         <tr>
-                            <td>per capita medicare payment</td><td class="text-right"><%- numberWithCommas(county.medicare_payment_per_2016_capita,0) %></td>
+                            <td>per capita medicare payment</td><td class="text-right">$<%- numberWithCommas(county.medicare_payment_per_2016_capita) %></td>
                         </tr>
                         <tr>
-                            <td>total medicare charge amount</td><td class="text-right"><%- numberWithCommas(county.total_charge_amount,0) %></td>
+                            <td>total medicare charge amount</td><td class="text-right">$<%- numberWithCommas(county.total_charge_amount,0) %></td>
                         </tr>
                         </tr>
-                            <td>per capita medicare charge amount</td><td class="text-right"><%- numberWithCommas(county.charge_amount_per_2016_capita,0) %></td>
+                            <td>per capita medicare charge amount</td><td class="text-right">$<%- numberWithCommas(county.charge_amount_per_2016_capita) %></td>
                         </tr>
                         <tr>
                             <td>home health visit hours per day</td><td class="text-right"><%- numberWithCommas(county.home_health_visit_hours_per_day,0) %></td>
@@ -90,7 +90,7 @@
                             <td>social service visit hours per day during week prior to death</td><td class="text-right"><%- numberWithCommas(county.social_service_visit_hours_per_day_during_week_prior_to_death,0) %></td>
                         </tr>
                         <tr>
-                            <td>percent routine home care days</td><td class="text-right"><%- numberWithCommas(county.percent_routine_home_care_days,0) %></td>
+                            <td>percent routine home care days</td><td class="text-right"><%- numberWithCommas(county.percent_routine_home_care_days,0) %>%</td>
                         <tr>
                             <td>numhospices per 2016 capita</td><td class="text-right"><%- numberWithCommas(county.numhospices_per_2016_capita,0) %></td>
                         </tr>
