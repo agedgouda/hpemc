@@ -99,13 +99,16 @@
                                 </tr>
                             </thead>
                             <tbody>
+                               <?php
+                                    $countySortedMedicare = $countyData->sortByDesc('medicare_payment_per_2016_capita')->values()->all();
+                                ?>
                                 @for ($i = 0; $i < 5; $i++)
-                                    <tr onClick="showCountyModal(JSON.stringify({{$countyData[$i]}}))">
+                                    <tr onClick="showCountyModal(JSON.stringify({{$countySortedMedicare[$i]}}))">
                                         <td class="text-left">
-                                        {{ ucwords(strtolower($countyData[$i]->county_name)) }}
+                                        {{ ucwords(strtolower($countySortedMedicare[$i]->county_name)) }}
                                         </td>
                                         <td class="text-right">
-                                        ${{ number_format($countyData[$i]->medicare_payment_per_2016_capita,2) }}
+                                        ${{ number_format($countySortedMedicare[$i]->medicare_payment_per_2016_capita,2) }}
                                         </td>
                                     </tr>
                                 @endfor
