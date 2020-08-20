@@ -67,22 +67,50 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.19/lodash.min.js"></script>
 
 
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-        crossorigin=""></script>
+        <script>
+            $(document).ready( function () {
+                var table = $('#legend-table').DataTable( {
+                    searching: false,
+                    paging: false,
+                    ordering: false,
+                    info: false
+                } );
+            } );
+        </script>
+
+        <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+            integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+            crossorigin=""></script>
+
     </head>
     <body>
     @include('partials.county-modal')
-
-
-
-
-
         <div class="container">
             <h1>Texas Hospice Data</h1>
             <div class="row">
                 <div class="col-sm-4">
-                    <div id="legend"></div>
+                    <div id="legend">
+                        <table id="legend-table" class="stripe display" style="cursor:pointer;width:100%">
+                            <thead>
+                                <tr>
+                                    <th>County</th>
+                                    <th class="text-right">Population</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for ($i = 0; $i < 5; $i++)
+                                    <tr onClick="showCountyModal(JSON.stringify({{$countyData[$i]}}))">
+                                        <td class="text-left">
+                                        {{ ucwords(strtolower($countyData[$i]->county_name)) }}
+                                        </td>
+                                        <td class="text-right">
+                                        {{ number_format($countyData[$i]->pop_2016) }}
+                                        </td>
+                                    </tr>
+                                @endfor
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="col-sm-7 offset-sm-1" style="padding-top: 15px;">
                     <div id="mapid"></div>
@@ -148,6 +176,13 @@
     var countyDetailTemplate = _.template(str);
 
 
+
+
+
+
+
+
+
     var countyCluster = [];
     var countyData = <?php echo json_encode($countyData ) ?>;
     var old_e = "";
@@ -210,7 +245,6 @@
 
     function getColor(score){
         color_score = (1/(score*5))
-        console.log(color_score)
         red = rgbToHex(255*(1-color_score));
         color = "#FF"+red+"00";
         return color;
@@ -330,13 +364,6 @@
         $('#cluster-table tbody').on( 'click', 'tr', function () {
             thisCountyData = _.find(countyData, {'county_name': JSON.parse($(this).data().county) });
             showCountyModal(JSON.stringify(thisCountyData))
-            if ( $(this).hasClass('selected') ) {
-                $(this).removeClass('selected');
-            }
-            else {
-                table.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-            }
         } );
 
         $('#button').click( function () {
